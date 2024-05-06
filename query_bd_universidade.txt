@@ -1,0 +1,289 @@
+-- Tabela Tb_Disciplina
+CREATE TABLE Tb_Disciplina (
+    Tb_Disciplina_codigo_disciplina INT PRIMARY KEY,
+    Tb_Disciplina_nome_disciplina VARCHAR(100)
+);
+
+-- Tabela Tb_Unidade_Academica
+CREATE TABLE Tb_Unidade_Academica (
+    Tb_Unidade_Academica_codigo INT PRIMARY KEY,
+    Tb_Unidade_Academica_nome VARCHAR(100)
+);
+
+-- Tabela Tb_funcao
+CREATE TABLE Tb_funcao (
+    Tb_funcao_id_funcao_formacao INT PRIMARY KEY,
+    Tb_funcao_formacao VARCHAR(100),
+    Tb_funcao_funcao VARCHAR(100)
+);
+
+-- Tabela Tb_contratado
+CREATE TABLE Tb_contratado (
+    Tb_contratado_matricula INT PRIMARY KEY,
+    Tb_contratado_nome VARCHAR(100),
+    Tb_contratado_email VARCHAR(100),
+    Tb_contratado_salario DECIMAL(10, 2),
+    Tb_contratado_codigo_funcao_formacao INT,
+    Tb_contratado_codigo_unidade_academica INT,
+    Tb_contratado_data_inicio_unidade DATE,
+    FOREIGN KEY (Tb_contratado_codigo_funcao_formacao) REFERENCES Tb_funcao(Tb_funcao_id_funcao_formacao),
+    FOREIGN KEY (Tb_contratado_codigo_unidade_academica) REFERENCES Tb_Unidade_Academica(Tb_Unidade_Academica_codigo)
+);
+
+-- Tabela Tb_Aluno
+CREATE TABLE Tb_Aluno (
+    Tb_Aluno_matricula INT PRIMARY KEY,
+    Tb_Aluno_nome VARCHAR(100),
+    Tb_Aluno_email VARCHAR(100),
+    Tb_Aluno_valor_mensalidade DECIMAL(10, 2)
+);
+
+-- Tabela Tb_turmas
+CREATE TABLE Tb_turmas (
+    Tb_tumas_id INT PRIMARY KEY,
+    Tb_turmas_numero_turma INT,
+    Tb_turmas_codigo_disciplina INT,
+    Tb_turmas_horario TIME,
+    Tb_turmas_semestre VARCHAR(50),
+    Tb_turmas_matricula_professor INT,
+    FOREIGN KEY (Tb_turmas_codigo_disciplina) REFERENCES Tb_Disciplina(Tb_Disciplina_codigo_disciplina),
+    FOREIGN KEY (Tb_turmas_matricula_professor) REFERENCES Tb_contratado(Tb_contratado_matricula)
+);
+
+-- Tabela Tb_dependentes
+CREATE TABLE Tb_dependentes (
+    Tb_dependentes_id_dependente INT PRIMARY KEY,
+    Tb_dependentes_nome VARCHAR(100),
+    Tb_dependentes_cpf VARCHAR(11) UNIQUE,
+    Tb_dependentes_matricula_funcionario INT,
+    FOREIGN KEY (Tb_dependentes_matricula_funcionario) REFERENCES Tb_contratado(Tb_contratado_matricula)
+);
+
+-- Tabela Tb_Aluno_Turma
+CREATE TABLE Tb_Aluno_Turma (
+    Tb_Aluno_Turma_id_registro INT PRIMARY KEY,
+    Tb_Aluno_Turma_matricula_aluno INT,
+    Tb_Aluno_Turma_numero_turma INT,
+    FOREIGN KEY (Tb_Aluno_Turma_matricula_aluno) REFERENCES Tb_Aluno(Tb_Aluno_matricula),
+    FOREIGN KEY (Tb_Aluno_Turma_numero_turma) REFERENCES Tb_turmas(Tb_tumas_id)
+);
+
+-- Inserir dados na tabela Tb_Disciplina
+INSERT INTO Tb_Disciplina (Tb_Disciplina_codigo_disciplina, Tb_Disciplina_nome_disciplina)
+VALUES
+    (1, 'Matemática'),
+    (2, 'História'),
+    (3, 'Biologia'),
+    (4, 'Física'),
+    (5, 'Química'),
+    (6, 'Geografia'),
+    (7, 'Literatura'),
+    (8, 'Inglês'),
+    (9, 'Artes'),
+    (10, 'Educação Física');
+
+-- Inserir dados na tabela Tb_Unidade_Academica
+INSERT INTO Tb_Unidade_Academica (Tb_Unidade_Academica_codigo, Tb_Unidade_Academica_nome)
+VALUES
+    (1, 'Departamento de Matemática'),
+    (2, 'Departamento de História'),
+    (3, 'Departamento de Ciências Biológicas'),
+    (4, 'Departamento de Física'),
+    (5, 'Departamento de Química'),
+    (6, 'Departamento de Geografia'),
+    (7, 'Departamento de Letras'),
+    (8, 'Departamento de Idiomas'),
+    (9, 'Departamento de Artes'),
+    (10, 'Departamento de Educação Física');
+
+-- Inserir dados na tabela Tb_funcao
+INSERT INTO Tb_funcao (Tb_funcao_id_funcao_formacao, Tb_funcao_formacao, Tb_funcao_funcao)
+VALUES
+    (11, 'Administração', 'Funcionário Administrativo'),
+    (12, 'Contabilidade', 'Contador'),
+    (13, 'Recursos Humanos', 'Especialista em RH'),
+    (14, 'Tecnologia da Informação', 'Analista de TI'),
+    (15, 'Marketing', 'Especialista em Marketing');
+
+-- Inserir dados na tabela Tb_contratado
+INSERT INTO Tb_contratado (Tb_contratado_matricula, Tb_contratado_nome, Tb_contratado_email, Tb_contratado_salario, Tb_contratado_codigo_funcao_formacao, Tb_contratado_codigo_unidade_academica, Tb_contratado_data_inicio_unidade)
+VALUES
+    (101, 'Ana Funcionária', 'ana_func@example.com', 2500.00, 11, 1, '2021-02-01'),
+    (102, 'Carlos Funcionário', 'carlos_func@example.com', 2600.00, 12, 2, '2020-09-01'),
+    (103, 'Marta Funcionária', 'marta_func@example.com', 2700.00, 13, 3, '2019-11-01'),
+    (104, 'João Funcionário', 'joao_func@example.com', 2800.00, 14, 4, '2022-04-01'),
+    (105, 'Juliana Funcionária', 'juliana_func@example.com', 2900.00, 15, 5, '2023-07-01'),
+    (106, 'Rodrigo Funcionário', 'rodrigo_func@example.com', 3000.00, 11, 6, '2022-03-01'),
+    (107, 'Cristina Funcionária', 'cristina_func@example.com', 3100.00, 12, 7, '2021-08-01'),
+    (108, 'Gustavo Funcionário', 'gustavo_func@example.com', 3200.00, 13, 8, '2020-05-01'),
+    (109, 'Paula Funcionária', 'paula_func@example.com', 3300.00, 14, 9, '2023-01-01'),
+    (110, 'Leonardo Funcionário', 'leonardo_func@example.com', 3400.00, 15, 10, '2019-10-01'),
+    (111, 'Fernanda Funcionária', 'fernanda_func@example.com', 2500.00, 11, 1, '2021-02-01'),
+    (112, 'Gabriel Funcionário', 'gabriel_func@example.com', 2600.00, 12, 2, '2020-09-01'),
+    (113, 'Rafael Funcionário', 'rafael_func@example.com', 2700.00, 13, 3, '2019-11-01'),
+    (114, 'Mariana Funcionária', 'mariana_func@example.com', 2800.00, 14, 4, '2022-04-01'),
+    (115, 'Camila Funcionária', 'camila_func@example.com', 2900.00, 15, 5, '2023-07-01'),
+    (116, 'Pedro Funcionário', 'pedro_func@example.com', 3000.00, 11, 6, '2022-03-01'),
+    (117, 'Luiza Funcionária', 'luiza_func@example.com', 3100.00, 12, 7, '2021-08-01'),
+    (118, 'Henrique Funcionário', 'henrique_func@example.com', 3200.00, 13, 8, '2020-05-01'),
+    (119, 'Isabela Funcionária', 'isabela_func@example.com', 3300.00, 14, 9, '2023-01-01'),
+    (120, 'Lucas Funcionário', 'lucas_func@example.com', 3400.00, 15, 10, '2019-10-01');
+
+-- Inserir dados na tabela Tb_Aluno
+INSERT INTO Tb_Aluno (Tb_Aluno_matricula, Tb_Aluno_nome, Tb_Aluno_email, Tb_Aluno_valor_mensalidade)
+VALUES
+    (1, 'João Silva', 'joao@example.com', 500.00),
+    (2, 'Maria Oliveira', 'maria@example.com', 550.00),
+    (3, 'Pedro Santos', 'pedro@example.com', 480.00),
+    (4, 'Ana Souza', 'ana@example.com', 520.00),
+    (5, 'Lucas Ferreira', 'lucas@example.com', 490.00),
+    (6, 'Juliana Lima', 'juliana@example.com', 510.00),
+    (7, 'Carlos Pereira', 'carlos@example.com', 530.00),
+    (8, 'Fernanda Costa', 'fernanda@example.com', 540.00),
+    (9, 'Rafaela Santos', 'rafaela@example.com', 470.00),
+    (10, 'Gustavo Almeida', 'gustavo@example.com', 560.00),
+    (11, 'Patrícia Oliveira', 'patricia@example.com', 580.00),
+    (12, 'Roberto Silva', 'roberto@example.com', 600.00),
+    (13, 'Cristina Lima', 'cristina@example.com', 620.00),
+    (14, 'Marcelo Santos', 'marcelo@example.com', 530.00),
+    (15, 'Carla Pereira', 'carla@example.com', 550.00),
+    (16, 'Felipe Costa', 'felipe@example.com', 570.00),
+    (17, 'Amanda Oliveira', 'amanda@example.com', 590.00),
+    (18, 'José Almeida', 'jose@example.com', 510.00),
+    (19, 'Mariana Ferreira', 'mariana@example.com', 530.00),
+    (20, 'Bruno Silva', 'bruno@example.com', 540.00);
+
+-- Inserir dados na tabela Tb_turmas
+INSERT INTO Tb_turmas (Tb_tumas_id, Tb_turmas_numero_turma, Tb_turmas_codigo_disciplina, Tb_turmas_horario, Tb_turmas_semestre, Tb_turmas_matricula_professor)
+VALUES
+    (1, 101, 1, '08:00:00', '2024/1', 101),
+    (2, 102, 2, '10:00:00', '2024/1', 102),
+    (3, 103, 3, '14:00:00', '2024/1', 103),
+    (4, 104, 1, '08:00:00', '2024/2', 104),
+    (5, 105, 2, '10:00:00', '2024/2', 105),
+    (6, 106, 3, '14:00:00', '2024/2', 106),
+    (7, 107, 1, '08:00:00', '2024/1', 107),
+    (8, 108, 2, '10:00:00', '2024/1', 108),
+    (9, 109, 3, '14:00:00', '2024/1', 109),
+    (10, 110, 1, '08:00:00', '2024/2', 110),
+    (11, 111, 1, '08:00:00', '2024/1', 111),
+    (12, 112, 2, '10:00:00', '2024/1', 112),
+    (13, 113, 3, '14:00:00', '2024/1', 113),
+    (14, 114, 1, '08:00:00', '2024/2', 114),
+    (15, 115, 2, '10:00:00', '2024/2', 115),
+    (16, 116, 3, '14:00:00', '2024/2', 116),
+    (17, 117, 1, '08:00:00', '2024/1', 117),
+    (18, 118, 2, '10:00:00', '2024/1', 118),
+    (19, 119, 3, '14:00:00', '2024/1', 119),
+    (20, 120, 1, '08:00:00', '2024/2', 120);
+   
+   
+
+   
+-- Inserir dados na tabela Tb_Aluno_Turma
+INSERT INTO Tb_Aluno_Turma (Tb_Aluno_Turma_id_registro, Tb_Aluno_Turma_matricula_aluno, Tb_Aluno_Turma_numero_turma)
+VALUES
+    (1, 1, 1),
+    (2, 2, 2),
+    (3, 3, 3),
+    (4, 4, 4),
+    (5, 5, 5),
+    (6, 6, 6),
+    (7, 7, 7),
+    (8, 8, 8),
+    (9, 9, 9),
+    (10, 10, 10),
+    (11, 11, 11),
+    (12, 12, 12),
+    (13, 13, 13),
+    (14, 14, 14),
+    (15, 15, 15),
+    (16, 16, 16),
+    (17, 17, 17),
+    (18, 18, 18),
+    (19, 19, 19),
+    (20, 20, 20);
+
+-- Inserir dados na tabela Tb_dependentes
+INSERT INTO Tb_dependentes (Tb_dependentes_id_dependente, Tb_dependentes_nome, Tb_dependentes_cpf, Tb_dependentes_matricula_funcionario)
+VALUES
+    (1, 'Joãozinho', '12345678901', 101),
+    (2, 'Mariazinha', '98765432109', 102),
+    (3, 'Pedrinho', '45612378903', 103),
+    (4, 'Aninha', '98765412300', 104),
+    (5, 'Lucasinho', '45678912304', 105),
+    (6, 'Julianinha', '98712345600', 106),
+    (7, 'Carlinhos', '78945612308', 107),
+    (8, 'Fernandinha', '12378945602', 108),
+    (9, 'Rafaelzinho', '65498732100', 109),
+    (10, 'Gustavinho', '98745612301', 110),
+    (11, 'Joãozito', '12378945600', 111),
+    (12, 'Marieta', '45632198708', 112),
+    (13, 'Pedrita', '32145698707', 113),
+    (14, 'Anita', '98745632100', 114),
+    (15, 'Lucinha', '65478932104', 115),
+    (16, 'Juliozinho', '98712378906', 116),
+    (17, 'Carlota', '78945698700', 117),
+    (18, 'Fernandita', '12378965401', 118),
+    (19, 'Rafaelita', '65412378900', 119),
+    (20, 'Gustavita', '98765432101', 120);
+   
+   
+   
+   select * from Tb_Aluno;
+     select * from Tb_Aluno_Turma;
+       select * from Tb_Contratado;
+         select * from Tb_Dependentes;
+           select * from Tb_Disciplina;
+             select * from Tb_Funcao;
+               select * from tb_Turmas;
+                 select * from tb_unidade_academica;
+                
+                
+                
+                
+  SELECT 
+    A.Tb_Aluno_nome AS Nome_Aluno,
+    T.Tb_turmas_numero_turma AS Numero_Turma,
+    D.Tb_Disciplina_nome_disciplina AS Disciplina,
+    T.Tb_turmas_semestre AS Semestre
+FROM 
+    Tb_Aluno A
+JOIN 
+    Tb_Aluno_Turma AT ON A.Tb_Aluno_matricula = AT.Tb_Aluno_Turma_matricula_aluno
+JOIN 
+    Tb_turmas T ON AT.Tb_Aluno_Turma_numero_turma = T.Tb_tumas_id
+JOIN 
+    Tb_Disciplina D ON T.Tb_turmas_codigo_disciplina = D.Tb_Disciplina_codigo_disciplina;
+   
+   
+   
+   
+   SELECT 
+    C.Tb_contratado_nome AS Nome_Funcionario,
+    F.Tb_funcao_funcao AS Funcao,
+    D.Tb_dependentes_nome AS Nome_Dependente
+FROM 
+    Tb_contratado C
+JOIN 
+    Tb_dependentes D ON C.Tb_contratado_matricula = D.Tb_dependentes_matricula_funcionario
+JOIN 
+    Tb_funcao F ON C.Tb_contratado_codigo_funcao_formacao = F.Tb_funcao_id_funcao_formacao;
+
+
+   
+SELECT 
+    D.Tb_Disciplina_nome_disciplina AS Disciplina,
+    U.Tb_Unidade_Academica_nome AS Unidade_Academica,
+    T.tb_turmas_codigo_disciplina AS Numero_Turma,
+    T.tb_turmas_semestre,
+    T.tb_turmas_horario,
+    C.Tb_contratado_nome AS Nome_Professor
+FROM 
+    Tb_Disciplina D
+LEFT JOIN 
+    Tb_turmas T ON D.Tb_Disciplina_codigo_disciplina = T.Tb_turmas_codigo_disciplina
+LEFT JOIN 
+    Tb_contratado C ON T.Tb_turmas_matricula_professor = C.Tb_contratado_matricula
+INNER  JOIN 
+    Tb_Unidade_Academica U ON C.tb_contratado_codigo_unidade_academica = U.tb_unidade_academica_codigo;
